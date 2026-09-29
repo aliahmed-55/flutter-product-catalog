@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
+import 'package:product_catalog/features/favorites/viewmodel/favorites_controller.dart';
 import 'package:product_catalog/app/app.dart';
 import 'package:product_catalog/core/network/api_exception.dart';
 import 'package:product_catalog/data/models/product_page.dart';
@@ -19,6 +21,9 @@ Widget app(FakeProductRepository repository) => ProviderScope(
 );
 
 void main() {
+  setUp(() => Get.put(FavoritesController(), permanent: true));
+  tearDown(() => Get.reset());
+
   testWidgets(
     'Search debounces and category changes keep the text field synchronized',
     (tester) async {

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
+import 'package:product_catalog/features/favorites/viewmodel/favorites_controller.dart';
 
 import 'package:product_catalog/app/app.dart';
 import 'package:product_catalog/core/network/api_exception.dart';
@@ -18,6 +20,9 @@ import 'package:product_catalog/shared/widgets/loading_view.dart';
 import 'package:product_catalog/shared/widgets/product_card.dart';
 
 void main() {
+  setUp(() => Get.put(FavoritesController(), permanent: true));
+  tearDown(() => Get.reset());
+
   testWidgets('Loads ten products once and renders cards on a narrow screen', (
     tester,
   ) async {

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/product.dart';
+import 'favorite_button.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.product});
@@ -76,7 +77,6 @@ class ProductCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Row(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(
                         Icons.star_rounded,
@@ -88,6 +88,8 @@ class ProductCard extends StatelessWidget {
                         product.rating.toStringAsFixed(1),
                         style: theme.textTheme.bodySmall,
                       ),
+                      const Spacer(),
+                      FavoriteButton(product: product),
                     ],
                   ),
                 ],
