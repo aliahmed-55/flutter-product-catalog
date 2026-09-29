@@ -1,5 +1,6 @@
 abstract final class AppStrings {
   static const appName = 'Product Catalog';
-  static const welcomeTitle = 'A place for your next great find.';
-  static const welcomeMessage = 'Your catalog is coming soon.';
+  static const noProducts = 'No products found.';
+  static const retry = 'Retry';
+  static const productsLoadError = 'Unable to load products. Please try again.';
 }
