@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
+import '../../../app/routes/app_routes.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../shared/widgets/empty_view.dart';
 import '../../../shared/widgets/error_view.dart';
@@ -64,7 +66,16 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.appName)),
+      appBar: AppBar(
+        title: const Text(AppStrings.appName),
+        actions: [
+          IconButton(
+            tooltip: 'Open favorites',
+            icon: const Icon(Icons.favorite_outline),
+            onPressed: () => Get.toNamed<void>(AppRoutes.favorites),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
