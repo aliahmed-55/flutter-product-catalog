@@ -6,8 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:product_catalog/app/app.dart';
 import 'package:product_catalog/core/network/api_exception.dart';
-import 'package:product_catalog/data/models/category.dart';
-import 'package:product_catalog/data/models/product.dart';
+import 'support/fake_product_repository.dart';
+
 import 'package:product_catalog/data/models/product_page.dart';
 import 'package:product_catalog/data/repositories/product_repository.dart';
 import 'package:product_catalog/features/product_list/view/product_list_screen.dart';
@@ -44,7 +44,7 @@ void main() {
     expect(find.byType(LoadingView), findsNothing);
     expect(
       tester.widget<ListView>(find.byType(ListView)).semanticChildCount,
-      10,
+      11,
     );
     final firstCard = find.byWidgetPredicate(
       (widget) => widget is ProductCard && widget.product.id == 1,
@@ -72,7 +72,14 @@ void main() {
       ),
       findsOneWidget,
     );
-    await tester.scrollUntilVisible(find.text('Product 10'), 300);
+    await tester.scrollUntilVisible(
+      find.text('Product 10'),
+      300,
+      scrollable: find.descendant(
+        of: find.byKey(const ValueKey('product-list')),
+        matching: find.byType(Scrollable),
+      ),
+    );
     expect(find.text('Product 10'), findsOneWidget);
     expect(repository.calls, 1);
     expect(tester.takeException(), isNull);
@@ -143,62 +150,4 @@ Widget createApp(ProductRepository repository) {
     overrides: [productRepositoryProvider.overrideWithValue(repository)],
     child: const ProductCatalogApp(),
   );
-}
-
-ProductPage productPage(int count) {
-  return ProductPage(
-    products: List.generate(
-      count,
-      (index) => Product(
-        id: index + 1,
-        title: 'Product ${index + 1}',
-        description: 'Test product',
-        price: 9.99,
-        discountPercentage: 10,
-        rating: 4.5,
-        stock: 20,
-        category: 'beauty',
-        thumbnail: '',
-        images: const [],
-      ),
-    ),
-    total: count,
-    skip: 0,
-    limit: 10,
-  );
-}
-
-class FakeProductRepository implements ProductRepository {
-  FakeProductRepository(this.response);
-
-  Future<ProductPage> Function() response;
-  int calls = 0;
-
-  @override
-  Future<ProductPage> getProducts({required int limit, required int skip}) {
-    expect(limit, 10);
-    expect(skip, 0);
-    calls++;
-    return response();
-  }
-
-  @override
-  Future<ProductPage> searchProducts({
-    required String query,
-    required int limit,
-    required int skip,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<ProductPage> getProductsByCategory({
-    required String slug,
-    required int limit,
-    required int skip,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<Product> getProduct(int id) => throw UnimplementedError();
-
-  @override
-  Future<List<Category>> getCategories() => throw UnimplementedError();
 }

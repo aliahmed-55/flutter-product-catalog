@@ -55,7 +55,7 @@ class ApiClient {
       throw const ApiException('The request timed out. Please try again.');
     } on http.ClientException {
       throw const ApiException(
-        'Unable to connect. Check your internet connection and try again.',
+        'Unable to reach the server. Please check your connection and try again.',
       );
     } on FormatException {
       throw const ApiException(
