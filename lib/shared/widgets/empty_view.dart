@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class EmptyView extends StatelessWidget {
-  const EmptyView({super.key, required this.message});
+  const EmptyView({
+    super.key,
+    required this.message,
+    this.supportingText,
+    this.icon = Icons.inventory_2_outlined,
+  });
 
   final String message;
+  final String? supportingText;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +22,27 @@ class EmptyView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.inventory_2_outlined,
-              size: 48,
-              color: theme.colorScheme.onSurfaceVariant,
+            CircleAvatar(
+              radius: 40,
+              backgroundColor: theme.colorScheme.surfaceContainerLow,
+              child: Icon(icon, size: 40, color: theme.colorScheme.primary),
             ),
             const SizedBox(height: 16),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyLarge,
+              style: theme.textTheme.titleMedium,
             ),
+            if (supportingText != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                supportingText!,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
           ],
         ),
       ),

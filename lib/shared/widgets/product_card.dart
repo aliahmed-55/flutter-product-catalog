@@ -30,7 +30,7 @@ class ProductCard extends StatelessWidget {
                   color: theme.colorScheme.surfaceContainerLow,
                   child: SizedBox(
                     width: 96,
-                    height: 112,
+                    height: 96,
                     child: product.thumbnail.isEmpty
                         ? Icon(
                             Icons.image_not_supported_outlined,
@@ -63,6 +63,8 @@ class ProductCard extends StatelessWidget {
                   children: [
                     Text(
                       product.category,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.labelMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -91,11 +93,14 @@ class ProductCard extends StatelessWidget {
                           color: Color(0xFF9A6700),
                         ),
                         const SizedBox(width: 4),
-                        Text(
-                          product.rating.toStringAsFixed(1),
-                          style: theme.textTheme.bodySmall,
+                        Expanded(
+                          child: Text(
+                            product.rating.toStringAsFixed(1),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodySmall,
+                          ),
                         ),
-                        const Spacer(),
                         FavoriteButton(product: product),
                       ],
                     ),

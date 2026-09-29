@@ -21,7 +21,11 @@ class FavoritesScreen extends StatelessWidget {
             child: Obx(() {
               final products = controller.favoriteProducts;
               if (products.isEmpty) {
-                return const EmptyView(message: 'No favorite products yet.');
+                return const EmptyView(
+                  message: 'No favorite products yet.',
+                  supportingText: 'Tap the heart on a product to save it here.',
+                  icon: Icons.favorite_border,
+                );
               }
               return ListView.builder(
                 padding: const EdgeInsets.all(16),

@@ -20,6 +20,11 @@ class FavoriteButton extends StatelessWidget {
         tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
         isSelected: isFavorite,
         color: color,
+        style: IconButton.styleFrom(
+          backgroundColor: isFavorite
+              ? Theme.of(context).colorScheme.primaryContainer
+              : Theme.of(context).colorScheme.surfaceContainerLow,
+        ),
         icon: const Icon(Icons.favorite_border),
         selectedIcon: const Icon(Icons.favorite),
         onPressed: () => controller.toggleFavorite(product),

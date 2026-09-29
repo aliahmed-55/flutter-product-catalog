@@ -59,11 +59,6 @@ class _ProductSearchFieldState extends ConsumerState<ProductSearchField> {
                     ref.read(productListNotifierProvider.notifier).search(''),
                 icon: const Icon(Icons.close),
               ),
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
-        ),
       ),
     );
   }
