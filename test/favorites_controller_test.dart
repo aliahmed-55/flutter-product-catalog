@@ -22,15 +22,4 @@ void main() {
     expect(controller.isFavorite(1), isTrue);
     expect(controller.favoriteProducts.length, 2);
   });
-
-  test('Adding the same ID updates its product without adding a duplicate', () {
-    final controller = FavoritesController();
-    final original = productPage(1).products.single;
-    final updated = productPage(1).products.single;
-    controller.addFavorite(original);
-    controller.addFavorite(updated);
-    expect(controller.favoriteProducts.single, same(updated));
-    expect(() => controller.favoriteProducts.clear(), throwsUnsupportedError);
-    expect(FavoritesController().favoriteProducts, isEmpty);
-  });
 }

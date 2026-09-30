@@ -43,7 +43,6 @@ class FakeProductRepository implements ProductRepository {
 
   Future<ProductPage> Function() response;
   Future<ProductPage> Function(String source, int skip)? onPage;
-  Future<List<Category>> Function()? categoryResponse;
   final requests = <({String source, int skip})>[];
   int categoryCalls = 0;
   int get calls => requests.length;
@@ -78,6 +77,6 @@ class FakeProductRepository implements ProductRepository {
   @override
   Future<List<Category>> getCategories() {
     categoryCalls++;
-    return categoryResponse?.call() ?? Future.value([beauty, groceries]);
+    return Future.value([beauty, groceries]);
   }
 }

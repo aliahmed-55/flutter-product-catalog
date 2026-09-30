@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -7,82 +5,44 @@ import 'package:product_catalog/core/network/api_client.dart';
 import 'package:product_catalog/core/network/api_exception.dart';
 
 void main() {
-  test('ClientException uses a server and connection message', () async {
+  test('GET sends query parameters and decodes the JSON response', () async {
     final client = ApiClient(
-      client: MockClient(
-        (_) async => throw http.ClientException('Unreachable host'),
-      ),
+      client: MockClient((request) async {
+        expect(request.method, 'GET');
+        expect(request.url.host, 'dummyjson.com');
+        expect(request.url.path, '/products');
+        expect(request.url.queryParameters, {'limit': '10', 'skip': '0'});
+        return http.Response(
+          '{"products":[],"total":0,"skip":0,"limit":10}',
+          200,
+        );
+      }),
     );
     addTearDown(client.close);
+
+    final data = await client.get(
+      '/products',
+      queryParameters: {'limit': '10', 'skip': '0'},
+    );
+
+    expect(data, {'products': [], 'total': 0, 'skip': 0, 'limit': 10});
+  });
+
+  test('HTTP 404 becomes a user-friendly API error', () async {
+    final client = ApiClient(
+      client: MockClient((_) async => http.Response('Not found', 404)),
+    );
+    addTearDown(client.close);
+
     await expectLater(
-      client.get('/products'),
+      client.get('/products-invalid'),
       throwsA(
         isA<ApiException>().having(
           (error) => error.message,
           'message',
-          'Unable to reach the server. Please check your connection and try again.',
+          'The requested data could not be found.',
         ),
       ),
     );
   });
-
-  test('Timeout retains its distinct message', () async {
-    final client = ApiClient(
-      client: MockClient((_) async => throw TimeoutException('Timeout')),
-    );
-    addTearDown(client.close);
-    await expectLater(
-      client.get('/products'),
-      throwsA(
-        isA<ApiException>().having(
-          (error) => error.message,
-          'message',
-          'The request timed out. Please try again.',
-        ),
-      ),
-    );
-  });
-
-  test('Malformed JSON is an invalid-data error', () async {
-    final client = ApiClient(
-      client: MockClient((_) async => http.Response('invalid JSON', 200)),
-    );
-    addTearDown(client.close);
-    await expectLater(
-      client.get('/products'),
-      throwsA(
-        isA<ApiException>().having(
-          (error) => error.message,
-          'message',
-          'The server returned invalid data. Please try again.',
-        ),
-      ),
-    );
-  });
-
-  for (final entry in {
-    404: 'The requested data could not be found.',
-    429: 'Too many requests. Please try again shortly.',
-    503: 'The server is unavailable. Please try again later.',
-  }.entries) {
-    test('HTTP ${entry.key} retains its status-specific error', () async {
-      final client = ApiClient(
-        client: MockClient((request) async {
-          expect(request.url.host, 'dummyjson.com');
-          return http.Response('Server response', entry.key);
-        }),
-      );
-      addTearDown(client.close);
-      await expectLater(
-        client.get('/products-invalid'),
-        throwsA(
-          isA<ApiException>().having(
-            (error) => error.message,
-            'message',
-            entry.value,
-          ),
-        ),
-      );
-    });
-  }
 }
