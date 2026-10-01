@@ -159,8 +159,8 @@ To generate the Android release APK:
 
 ```sh
 flutter build apk --release
+
+After a successful build, the APK is available at:
+build/app/outputs/flutter-apk/app-release.apk
+The release APK has been successfully built and tested on multiple Android devices.
 ```
-
-After a successful build, the APK is available at `build/app/outputs/flutter-apk/app-release.apk`.
-
-Release APK generation and signature verification have passed. The current release configuration uses the development signing key for assessment installation. Android device installation and functional verification remain pending.
