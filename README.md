@@ -134,8 +134,6 @@ Focused Riverpod subscriptions and `select()` reduce unrelated rebuilds; actions
 
 ## Testing
 
-## Testing
-
 The project includes 8 unit tests across 3 files and 3 widget tests across 2 files.
 
 The tests cover:
@@ -157,4 +155,12 @@ flutter analyze
 
 ## Build
 
-To generate the Android release APK, run flutter build apk --release. After a successful build, the APK will be available at build/app/outputs/flutter-apk/app-release.apk.
+To generate the Android release APK:
+
+```sh
+flutter build apk --release
+```
+
+After a successful build, the APK is available at `build/app/outputs/flutter-apk/app-release.apk`.
+
+Release APK generation and signature verification have passed. The current release configuration uses the development signing key for assessment installation. Android device installation and functional verification remain pending.
